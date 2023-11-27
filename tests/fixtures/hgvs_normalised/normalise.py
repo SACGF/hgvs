@@ -26,7 +26,7 @@ def run_bcftools_sort(input_file, output_file):
         print(f"An error occurred: {e}")
         
 def run_bcftools_norm(input_vcf, output_vcf):
-    try:
+    try:         
         subprocess.run(["bcftools", "norm", "-cw", "-O", "z", "-o", output_vcf, "--fasta-ref", fasta, input_vcf], check=True)
         print(f"Normalization completed successfully. Output saved to {output_vcf}")
     except subprocess.CalledProcessError as e:
@@ -39,8 +39,8 @@ def process_csv(input_file, output_file):
         
         for i, row in enumerate(reader):
             success = row.get('Success') == 'True'
+            hgvs = row.get('HGVS')
             if success: 
-                hgvs = row.get('HGVS')
                 chr = 'chr' + row.get('Chromosome')
                 pos = row.get('Position')
                 ref = row.get('Ref')
@@ -58,11 +58,13 @@ def process_csv(input_file, output_file):
                 
                 os.remove(unsorted_file)
                 os.remove(sorted_file)
+            else:
+                print(f'Skipping {hgvs}')
             
                 
 def main():
     process_csv("../hgvs_downloads/output_ensemble.csv", "ensemble")
-    process_csv("../hgvs_downloads/output_variant_validator", "variant_validator")
+    process_csv("../hgvs_downloads/output_variant_validator.csv", "variant_validator")
 
 if __name__ == '__main__':
     main()
