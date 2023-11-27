@@ -52,3 +52,4 @@ tests/fixtures/*.fa**
 
 **/.DS_Store
 /bcftools*
+/tests/fixtures/hgvs_normalised/vcf_validator_linux
