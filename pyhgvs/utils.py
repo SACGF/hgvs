@@ -156,8 +156,14 @@ def read_transcripts(refgene_file):
     """
     transcripts = {}
     for trans in (make_transcript(record)
-                  for record in read_refgene(refgene_file)):
-        transcripts[trans.name] = trans
-        transcripts[trans.full_name] = trans
+                  for record in read_refgene(refgene_file)):   
+
+        if trans.name not in transcripts.keys():
+            transcripts[trans.name] = {}
+            transcripts[trans.full_name] = {}
+
+        if trans.tx_position.chrom not in transcripts[trans.name].keys():
+            transcripts[trans.name][trans.tx_position.chrom] = trans
+            transcripts[trans.full_name][trans.tx_position.chrom] = trans        
 
     return transcripts

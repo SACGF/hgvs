@@ -1,0 +1,23 @@
+name: pull_request
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+
+  pull_request:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: dev
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download refGene (sample dataset for tests)
+      run: ./download_refGene.sh -hg38_sample
+
+    - name: Run Tests
+      run: ./run-tests.sh

@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: FastAPI",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "env": {
+                "FASTA": "assemblies/Homo_sapiens.GRCh38.dna.primary_assembly.fa",
+                "REFGENE": "reference/genes.refGene"
+            },
+            "args": [
+                "pyhgvs.api:app",
+                "--port", "9001",
+                "--reload"
+            ],
+            "jinja": true,
+            "justMyCode": true
+        },
+        {
+            "name": "Python: FastAPI - chrX",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "env": {
+                "FASTA": "tests/fixtures/Homo_sapiens.GRCh38.dna.chromosome.X.Y.fa",
+                "REFGENE": "tests/fixtures/genes.refGene"
+            },
+            "args": [
+                "pyhgvs.api:app",
+                "--port", "9001",
+                "--reload"
+            ],
+            "jinja": true,
+            "justMyCode": true
+        }
+    ]
+}

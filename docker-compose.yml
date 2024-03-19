@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  hgvs:
+    image: hgvs
+    build: .
+    ports:
+      - "8002:8002"
+    environment:
+      - FASTA=assemblies/hg38.fa
+      - REFGENE=reference/genes.refGene
