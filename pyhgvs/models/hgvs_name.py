@@ -110,6 +110,7 @@ class HGVSRegex(object):
     INS = "(?P<mutation_type>ins)"
     DEL = "(?P<mutation_type>del)"
     DUP = "(?P<mutation_type>dup)"
+    INV = "(?P<mutation_type>inv)"
 
     # Simple coordinate syntax
     COORD_START = "(?P<start>\d+)"
@@ -141,12 +142,13 @@ class HGVSRegex(object):
         CDNA_START + DEL,
         CDNA_START + DUP,
 
-        # Insertion, deletion, duplication
+        # Insertion, deletion, duplication, inversion
         CDNA_RANGE + INS + DNA_ALT,
         CDNA_RANGE + DEL + DNA_REF,
         CDNA_RANGE + DUP + DNA_REF,
         CDNA_RANGE + DEL,
         CDNA_RANGE + DUP,
+        CDNA_RANGE + INV,
 
         # Indels
         "(?P<delins>" + CDNA_START + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
