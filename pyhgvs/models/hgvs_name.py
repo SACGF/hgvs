@@ -1,4 +1,4 @@
-"""
+r"""
 HGVS language currently implemented.
 
 HGVS = ALLELE
@@ -99,30 +99,30 @@ class HGVSRegex(object):
 
     # DNA syntax
     # http://www.hgvs.org/mutnomen/standards.html#nucleotide
-    BASE = "[acgtbdhkmnrsvwyACGTBDHKMNRSVWY]|\d+"
-    BASES = "[acgtbdhkmnrsvwyACGTBDHKMNRSVWY]+|\d+"
-    DNA_REF = "(?P<ref>" + BASES + ")"
-    DNA_ALT = "(?P<alt>" + BASES + ")"
+    BASE = r"[acgtbdhkmnrsvwyACGTBDHKMNRSVWY]|\d+"
+    BASES = r"[acgtbdhkmnrsvwyACGTBDHKMNRSVWY]+|\d+"
+    DNA_REF = r"(?P<ref>" + BASES + ")"
+    DNA_ALT = r"(?P<alt>" + BASES + ")"
 
     # Mutation types
-    EQUAL = "(?P<mutation_type>=)"
-    SUB = "(?P<mutation_type>>)"
-    INS = "(?P<mutation_type>ins)"
-    DEL = "(?P<mutation_type>del)"
-    DUP = "(?P<mutation_type>dup)"
+    EQUAL = r"(?P<mutation_type>=)"
+    SUB = r"(?P<mutation_type>>)"
+    INS = r"(?P<mutation_type>ins)"
+    DEL = r"(?P<mutation_type>del)"
+    DUP = r"(?P<mutation_type>dup)"
 
     # Simple coordinate syntax
-    COORD_START = "(?P<start>\d+)"
-    COORD_END = "(?P<end>\d+)"
+    COORD_START = r"(?P<start>\d+)"
+    COORD_END = r"(?P<end>\d+)"
     COORD_RANGE = COORD_START + "_" + COORD_END
 
     # cDNA coordinate syntax
-    CDNA_COORD = ("(?P<coord_prefix>|-|\*)(?P<coord>\d+)"
-                  "((?P<offset_prefix>-|\+)(?P<offset>\d+))?")
-    CDNA_START = ("(?P<start>(?P<start_coord_prefix>|-|\*)(?P<start_coord>\d+)"
-                  "((?P<start_offset_prefix>-|\+)(?P<start_offset>\d+))?)")
+    CDNA_COORD = (r"(?P<coord_prefix>|-|\*)(?P<coord>\d+)"
+                  r"((?P<offset_prefix>-|\+)(?P<offset>\d+))?")
+    CDNA_START = (r"(?P<start>(?P<start_coord_prefix>|-|\*)(?P<start_coord>\d+)"
+                  r"((?P<start_offset_prefix>-|\+)(?P<start_offset>\d+))?)")
     CDNA_END = (r"(?P<end>(?P<end_coord_prefix>|-|\*)(?P<end_coord>\d+)"
-                "((?P<end_offset_prefix>-|\+)(?P<end_offset>\d+))?)")
+                r"((?P<end_offset_prefix>-|\+)(?P<end_offset>\d+))?)")
     CDNA_RANGE = CDNA_START + "_" + CDNA_END
 
     # cDNA allele syntax
@@ -149,22 +149,22 @@ class HGVSRegex(object):
         CDNA_RANGE + DUP,
 
         # Indels
-        "(?P<delins>" + CDNA_START + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
-        "(?P<delins>" + CDNA_RANGE + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
-        "(?P<delins>" + CDNA_START + 'delins' + DNA_ALT + ")",
-        "(?P<delins>" + CDNA_RANGE + 'delins' + DNA_ALT + ")",
+        r"(?P<delins>" + CDNA_START + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
+        r"(?P<delins>" + CDNA_RANGE + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
+        r"(?P<delins>" + CDNA_START + 'delins' + DNA_ALT + ")",
+        r"(?P<delins>" + CDNA_RANGE + 'delins' + DNA_ALT + ")",
     ]
 
     CDNA_ALLELE_REGEXES = [re.compile("^" + regex + "$")
                            for regex in CDNA_ALLELE]
 
     # Peptide syntax
-    PEP = "([A-Z]([a-z]{2}))+"
-    PEP_REF = "(?P<ref>" + PEP + ")"
-    PEP_REF2 = "(?P<ref2>" + PEP + ")"
-    PEP_ALT = "(?P<alt>" + PEP + ")"
+    PEP = r"([A-Z]([a-z]{2}))+"
+    PEP_REF = r"(?P<ref>" + PEP + ")"
+    PEP_REF2 = r"(?P<ref2>" + PEP + ")"
+    PEP_ALT = r"(?P<alt>" + PEP + ")"
 
-    PEP_EXTRA = "(?P<extra>(|=|\?)(|fs))"
+    PEP_EXTRA = r"(?P<extra>(|=|\?)(|fs))"
 
     # Peptide allele syntax
     PEP_ALLELE = [
@@ -178,9 +178,9 @@ class HGVSRegex(object):
 
         # Peptide indel
         # Example: Glu1161_Ser1164?fs
-        "(?P<delins>" + PEP_REF + COORD_START + "_" + PEP_REF2 + COORD_END +
+        r"(?P<delins>" + PEP_REF + COORD_START + "_" + PEP_REF2 + COORD_END +
         PEP_EXTRA + ")",
-        "(?P<delins>" + PEP_REF + COORD_START + "_" + PEP_REF2 + COORD_END +
+        r"(?P<delins>" + PEP_REF + COORD_START + "_" + PEP_REF2 + COORD_END +
         PEP_ALT + PEP_EXTRA + ")",
     ]
 
@@ -212,10 +212,10 @@ class HGVSRegex(object):
         COORD_RANGE + DUP,
 
         # Indels
-        "(?P<delins>" + COORD_START + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
-        "(?P<delins>" + COORD_RANGE + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
-        "(?P<delins>" + COORD_START + 'delins' + DNA_ALT + ")",
-        "(?P<delins>" + COORD_RANGE + 'delins' + DNA_ALT + ")",
+        r"(?P<delins>" + COORD_START + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
+        r"(?P<delins>" + COORD_RANGE + 'del' + DNA_REF + 'ins' + DNA_ALT + ")",
+        r"(?P<delins>" + COORD_START + 'delins' + DNA_ALT + ")",
+        r"(?P<delins>" + COORD_RANGE + 'delins' + DNA_ALT + ")",
     ]
 
     GENOMIC_ALLELE_REGEXES = [re.compile("^" + regex + "$")
